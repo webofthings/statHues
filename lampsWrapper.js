@@ -61,7 +61,6 @@
          }
     }
     exports.change = function(service, fn) {
-        console.log("Hep"); //
         if (_lampMapping[service]) {
             console.log("Change lamp state for service "+service+" (lamp "+_lampMapping[service]+")");
             var concern = Concern.Empty(service);
@@ -75,6 +74,27 @@
 
     }
     
+    exports.changeAndRestore = function(service, fn) {
+        if (_lampMapping[service]) {
+            console.log("Change and restore lamp state for service "+service+" (lamp "+_lampMapping[service]+")");
+
+            hue.lights(function(lights) {
+                var light = lights[_lampMapping[service]];
+                var lightId = light.id;
+                hue.light(lightId, function(lightData) {
+                    console.log("Initial state : ",lightData);
+                    var concern = Concern.Empty(service);
+                    concern = fn(concern).addState(lightData);
+                    var todos = concern.todo.reverse();
+                    executeNextStep(service, todos);
+                })
+
+            });
+        } else {
+            console.log("Warn : Service "+service+" is not registered");
+        }
+    }
+
     //function changeStatesAndRestore(newStates, duration) {
     //    Step(
     //        function lights() {

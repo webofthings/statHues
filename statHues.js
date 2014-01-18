@@ -74,7 +74,7 @@ console.log(green + "StatHues is now listening on port 1337!" + reset);
 
 	// Example to setup the lamps
 	setTimeout(function() {
-		lamps.change("test", function(lamp) {
+		lamps.changeAndRestore("github", function(lamp) {
 
 			return lamp.ok(750).blue(1000).cyan(1000).error().warn();
 		});
