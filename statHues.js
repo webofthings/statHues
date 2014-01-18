@@ -3,13 +3,13 @@
 
 // Imports
 var fs    		= require('fs'),
-	nconf 		= require('nconf'),
-	express 	= require('express'),
-	evrythng 	= require('./evrythngServices.js');
-	lamps 		= require('./lampsWrapper.js');
-	jenkins 	= require('./jenkinsWrapper.js');
-	git 		= require('./gitWrapper.js');
-	pingdom 	= require('./pingdomWrapper.js');
+nconf 		= require('nconf'),
+express 	= require('express'),
+evrythng 	= require('./evrythngServices.js');
+lamps 		= require('./lampsWrapper.js');
+jenkins 	= require('./jenkinsWrapper.js');
+git 		= require('./gitWrapper.js');
+pingdom 	= require('./pingdomWrapper.js');
 
 // Initalize the config file
 nconf.argv()
@@ -26,36 +26,47 @@ var reset = '\033[0m'; // Set back to white
 
 console.log(green + "Welcome to " + red + "s" + green + "t" + blue + "a" + red + "t" + green + "H" + blue + "u" + red + "e" + green + "s" + blue + "!" + reset);
 
-
-
 var app = express();
 app.use(express.bodyParser());
+<<<<<<< HEAD
 
 
 
 //var inputsOutputs = [lamps, git, jenkins];
 var inputsOutputs = [pingdom, lamps, git, jenkins, evrythng];
+=======
+var inputsOutputs = [pingdom, lamps, git, jenkins];
+>>>>>>> 4c5a34786a45d41d7c14ad16a605897bd98a5708
 
 
 // Let's initialise our modules...
-
 for(var i = 0; i < inputsOutputs.length; i++) {
 	var currentService = inputsOutputs[i];
 	currentService.init(nconf.get(currentService.name()));
 }
 
-// and call all the input services!
-for(var i = 0; i < inputsOutputs.length; i++) {
-	var currentService = inputsOutputs[i];
-	if(currentService.type() === 'input') {
-		currentService.checkStatus();
+/*// and call all the input services!
+setTimeout(function() {
+	loopInputs();
+}, 1000);
+
+function loopInputs() {
+	for(var i = 0; i < inputsOutputs.length; i++) {
+		var currentService = inputsOutputs[i];
+		if(currentService.type() === 'input') {
+			currentService.checkStatus();
+		}
+	}
+}*/
+
+
+function Service(thngId) {
+	return service = {
+		thngId : thngId,
+
 	}
 }
 
-// Let's initialise our modules...
-var services = ['test', 'jenkins', 'github', 'evrythng'];
-
-	
 // Add your routes here and send the data to your module
 
 app.get('/api/git/:kpi', function(req, res) {
@@ -73,10 +84,13 @@ app.get('/api/git/:kpi', function(req, res) {
 
 var server = require('http').createServer(app);
 server.listen(1337);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4c5a34786a45d41d7c14ad16a605897bd98a5708
 console.log(green + "StatHues is now listening on port 1337!" + reset);
 
-	// Example to setup the lamps
+/*	// Example to setup the lamps
 	setTimeout(function() {
 		lamps.changeAndRestore("github", function(lamp) {
 
@@ -86,5 +100,5 @@ console.log(green + "StatHues is now listening on port 1337!" + reset);
 
 			return lamp.red().magenta(1000).yellow(1000);
 		});
-	}, 1000);
+}, 1000);*/
 
