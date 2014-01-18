@@ -37,6 +37,14 @@ var git 	= require('./gitWrapper.js');
 	jenkins.init();
 	git.init();
 	
+	// Add your routes here and send the data to your module
+	
+	app.get('/api/git/:kpi', function(req, res) {
+		
+		git.parse(req, res);
+		
+	});
+	
 	// Now let's set up the server itself!	
 	
 var server = require('http').createServer(app);
