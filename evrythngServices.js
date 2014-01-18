@@ -40,6 +40,7 @@
 		
 		initService('github',function(thngId){
 			console.log("github shit is initialized");
+			//serviceId,
 			updateServiceProperty('github','commitToday',7,null,function(thngId){
 				console.log("github's property is initialized")
 			});
@@ -110,7 +111,7 @@
 			
 			var body = JSON.parse(data);
 			
-			if (body.thngsResultCount>0){// if thing was found, use its ID
+			if (body.thngs.length>0){// if thing was found, use its ID
 				// We assume there's only 1...
 				thngId=body.thngs[0].id
 				callback(thngId);
@@ -120,18 +121,17 @@
 				};
 				
 				console.log("This service doesn't exist yet, we create it then!", thng)
-		
+				
+				// Create it!
 				createThng(thng, function(data){
+					console.log("Thng created:",data)
+					//var body = JSON.parse(data);
 					callback(body.id);
 				})
 			}
 			
 		});
-		
-		// search for a thng called "serviceName"
-		
-		// if thng exists, return its id
-		
+			
 			
 	}
 	
