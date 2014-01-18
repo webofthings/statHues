@@ -12,6 +12,10 @@ module.exports = {
 		console.log("Initialising Git wrapper...");
 		
 	},
+	checkStatus : function() {
+		console.log("not implemented yet!");
+	},
+	
 	
 	parse: function (req, res) {
 		

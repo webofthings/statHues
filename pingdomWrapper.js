@@ -32,6 +32,5 @@ module.exports = {
 
 
 function serviceIsDown() {
-	hue.load(localConfig.url, localConfig.username);
-	hue.lights(function(lights){ for(i in lights) if(lights.hasOwnProperty(i)) hue.change(lights[i].set({"off": true, "rgb":[0,0,0]})); });
+	console.log("Not implemented yet!");
 }

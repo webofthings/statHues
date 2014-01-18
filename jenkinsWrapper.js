@@ -11,6 +11,9 @@ module.exports = {
 		
 		console.log("Initialising Jenkins wrapper...");
 		
+	}, 
+	checkStatus : function() {
+		console.log("not implemented yet!");
 	}
 	
 }
