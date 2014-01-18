@@ -37,10 +37,9 @@
 		
 		
 		// in the mother code, load the service for each ;)			
-		
 		initService('github',function(thngId){
 			console.log("github shit is initialized");
-			//serviceId,
+			//serviceId,propertyName,value,timestamp,callback
 			updateServiceProperty('github','commitToday',7,null,function(thngId){
 				console.log("github's property is initialized")
 			});
