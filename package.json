@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"dependencies": {
 		"hue-module": "0.0.9",
-		"pingdom" : "0.6.2"
-
+		"pingdom" : "0.6.2",
+		"express": "3.4.8"
     }
 }
