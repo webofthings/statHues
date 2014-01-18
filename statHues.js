@@ -29,7 +29,7 @@ console.log(green + "Welcome to " + red + "s" + green + "t" + blue + "a" + red +
 var app = express();
 app.use(express.bodyParser());
 //var inputsOutputs = [pingdom, lamps, git, jenkins];
-var inputsOutputs = [lamps, jenkins, evrythng];
+var inputsOutputs = [lamps, pingdom, jenkins, evrythng];
 
 
 // Let's initialise our modules...

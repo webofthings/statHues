@@ -37,9 +37,9 @@ function checkStatus() {
 		var currentCheck = data.result;
 		console.log(currentCheck);
 		if(currentCheck.status !== 'SUCCESS') {
-			failure();
+			failure(currentCheck);
 		} else {
-			allServicesUp();
+			allServicesUp(currentCheck);
 		}
 
 		setTimeout(function() {
@@ -57,6 +57,7 @@ function hasStatusChanged(status) {
 }
 
 function failure(status) {
+	console.log(status);
 	if(hasStatusChanged) {
 		lamps.change(module.exports.name(), function(lamp) {
 			if(status === 'UNSTABLE') {
