@@ -1,8 +1,13 @@
 /* GitWrapper */
 
 module.exports = {
-	
-	init: function () {
+	name : function() {
+		return "git";
+	},
+	type : function() {
+		return "input";
+	},
+	init: function (config) {
 		
 		console.log("Initialising Git wrapper...");
 		
