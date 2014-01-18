@@ -58,12 +58,7 @@
                 "on" : toggle
             };
 
-            this.todo.push({
-                state : next,
-                duration : duration
-            });
-
-            return this;
+            return this.addState(next, duration);
         }
 
         Concern.prototype.rgb = function(rgb, duration) {
@@ -72,8 +67,17 @@
                 "rgb" : rgb
             };
 
+            return this.addState(next, duration);
+        }
+
+        Concern.prototype.addState = function(state, duration) {
+            var last = this.todo[this.todo.length - 1];
+            if (last && !last.duration) {
+                last.duration = 5000;
+            }
+
             this.todo.push({
-                state : next,
+                state : state,
                 duration : duration
             });
 

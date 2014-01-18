@@ -24,24 +24,34 @@
         });
     }
 
+    function executeNextStep(light, todos) {
+         var next = todos.pop();
+         if (next) {
+            console.log("Execute next step ", next);
+           var state = next.state;
+           console.log("-> state ", state);
+           var duration = next.duration;
+           console.log("-> duration ", duration);
+
+           // TODO
+            hue.change(light.set(state));
+           
+           if (duration) {
+               setTimeout(function() {
+                    executeNextStep(light, todos)
+                }, duration);
+           }
+         }
+    }
     exports.change = function(what, fn) {
         hue.lights(function(lights) {
             var light = lights[0];
-            console.log("To blue");
-            //hue.change(light.set({ rgb : [0,0,255]}));
 
-            var concern = Concern.Empty("test");
+            var concern = Concern.Empty(what);
             concern = fn(concern);
 
-            for (i = 0; i < concern.todo.length; i++) {
-                var todo = concern.todo[i];
-                console.log("Concern todo ", todo);
-
-                var state = todo.state;
-                 console.log("Concern state ", todo.state);
-
-                hue.change(light.set(todo.state));
-            }
+            var todos = concern.todo.reverse();
+            executeNextStep(light, todos);
         });
     }
     
