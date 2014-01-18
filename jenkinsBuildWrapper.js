@@ -6,6 +6,7 @@ lamps = require('./lampsWrapper.js');
 var localConfig;
 var prevStatus;
 var jenkins;
+var isRunning;
 
 module.exports = {
 	name : function() {
@@ -14,7 +15,11 @@ module.exports = {
 	type : function() {
 		return "input";
 	},
+    running : function(running) {
+        isRunning = running;
+    },
 	init: function (config) {
+        isRunning = true;
 		localConfig = config;
 		console.log("Initialising the %s service", module.exports.name());
                 console.log("Watched builds : ", localConfig.watched);
@@ -26,30 +31,32 @@ module.exports = {
 }
 
 function checkStatus() {
-	console.log("Calling %s", module.exports.name());
+    if(isRunning) {
+    	console.log("Calling %s", module.exports.name());
 
-	var building = false;
+    	var building = false;
 
-        for (i = 0; i < localConfig.watched.length ; i++) {
-            var buildName = localConfig.watched[i];
-            console.log("Check for build ",buildName);
-            var builds = jenkins.last_build_info(buildName, function(err, data) {
+            for (i = 0; i < localConfig.watched.length ; i++) {
+                var buildName = localConfig.watched[i];
+                console.log("Check for build ",buildName);
+                var builds = jenkins.last_build_info(buildName, function(err, data) {
 
-                if (err){
-                    console.log(err);
-                } else {
-                    building |= data.building;
-                    
-                }
-            });
-        }
+                    if (err){
+                        console.log(err);
+                    } else {
+                        building |= data.building;
+                        
+                    }
+                });
+            }
 
-        console.log("Build running :",building);
-        updateStatus(building);
+            console.log("Build running :",building);
+            updateStatus(building);
 
-        setTimeout(function() {
-                checkStatus();
-        }, localConfig.interval * 1000);
+            setTimeout(function() {
+                    checkStatus();
+            }, localConfig.interval * 1000);
+    }
 }
 
 

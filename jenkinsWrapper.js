@@ -1,7 +1,7 @@
 /* JenkinsWrapper */
 
 var jenkinsapi = require('jenkins-api'),
-lamp = require('./lampsWrapper.js');
+lamps = require('./lampsWrapper.js');
 
 var localConfig;
 var prevStatus;
@@ -19,6 +19,7 @@ module.exports = {
 		isRunning = running;
 	},
 	init: function (config) {
+		isRunning = true;
 		localConfig = config;
 		console.log("Initialising the %s service", module.exports.name());
 

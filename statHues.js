@@ -30,7 +30,6 @@ console.log(green + "Welcome to " + red + "s" + green + "t" + blue + "a" + red +
 
 var app = express();
 app.use(express.bodyParser());
-//var inputsOutputs = [pingdom, lamps, git, jenkins];
 var inputsOutputs = [lamps, pingdom, jenkins, evrythng, jenkinsBuilds];
 
 
@@ -44,7 +43,7 @@ for(var i = 0; i < inputsOutputs.length; i++) {
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0, 6)];
 rule.hour = 20;
-rule.minute = 37;
+rule.minute = 47;
 
 var stop = schedule.scheduleJob(rule, function(){
 	// stop the services
@@ -60,8 +59,8 @@ var stop = schedule.scheduleJob(rule, function(){
 // and on during the day
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0, 4)];
-rule.hour = 9;
-rule.minute = 00;
+rule.hour = 20;
+rule.minute = 48;
 
 var start = schedule.scheduleJob(rule, function(){
 	// start the services
