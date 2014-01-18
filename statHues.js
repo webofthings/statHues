@@ -33,7 +33,7 @@ var git 	= require('./gitWrapper.js');
 
 	// Let's initialise our modules...
 	
-	lamps.init();
+	lamps.init('192.168.11.131', 'newdeveloper');
 	jenkins.init();
 	git.init();
 	
@@ -52,3 +52,10 @@ var server = require('http').createServer(app);
 	server.listen(1337);
 	
 	console.log(green + "StatHues is now listening on port 1337!" + reset);
+
+	// Example to setup the lamps
+
+	lamps.change("test", function(lamp) {
+
+		return lamp.ok().error().warning();
+	});
