@@ -63,7 +63,7 @@ var server = require('http').createServer(app);
 
 	// Example to setup the lamps
 	setTimeout(function() {
-		lamps.change("test", function(lamp) {
+		lamps.changeAndRestore("github", function(lamp) {
 
 			return lamp.ok(750).blue(1000).cyan(1000).error().warn();
 		});
