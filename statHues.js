@@ -28,15 +28,11 @@ console.log(green + "Welcome to " + red + "s" + green + "t" + blue + "a" + red +
 
 var app = express();
 app.use(express.bodyParser());
-<<<<<<< HEAD
 
 
 
 //var inputsOutputs = [lamps, git, jenkins];
 var inputsOutputs = [pingdom, lamps, git, jenkins, evrythng];
-=======
-var inputsOutputs = [pingdom, lamps, git, jenkins];
->>>>>>> 4c5a34786a45d41d7c14ad16a605897bd98a5708
 
 
 // Let's initialise our modules...
@@ -84,10 +80,6 @@ app.get('/api/git/:kpi', function(req, res) {
 
 var server = require('http').createServer(app);
 server.listen(1337);
-<<<<<<< HEAD
-
-=======
->>>>>>> 4c5a34786a45d41d7c14ad16a605897bd98a5708
 console.log(green + "StatHues is now listening on port 1337!" + reset);
 
 /*	// Example to setup the lamps
