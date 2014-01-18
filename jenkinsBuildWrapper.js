@@ -2,6 +2,7 @@
 
 var jenkinsapi = require('jenkins-api'),
 lamps = require('./lampsWrapper.js');
+var Step = require('step');
 
 var localConfig;
 var prevStatus;
@@ -36,27 +37,37 @@ function checkStatus() {
 
     	var building = false;
 
-            for (i = 0; i < localConfig.watched.length ; i++) {
-                var buildName = localConfig.watched[i];
-                console.log("Check for build ",buildName);
-                var builds = jenkins.last_build_info(buildName, function(err, data) {
-
-                    if (err){
-                        console.log(err);
-                    } else {
-                        building |= data.building;
-                        
-                    }
-                });
+        Step(
+            function() {
+                var group = this.group();
+                for (i = 0; i < localConfig.watched.length ; i++) {
+                    var buildName = localConfig.watched[i];
+                    console.log("Check for build ",buildName);
+                    var builds = jenkins.last_build_info(buildName, group());
+                }
+            },
+            function(err, data) {
+                if (err){
+                    console.log(err);
+                }
+                for (i = 0; i< data.length; i++) {
+                    var d = data[i];
+                    console.log("Check job "+ d.fullDisplayName);
+                    // console.log(" -> ",d); // XXX
+                    console.log(" Running : "+d.building);
+                    building |= d.building;
+                }
+                
+                console.log("Build running :",building);
+                updateStatus(building);
             }
-
-            console.log("Build running :",building);
-            updateStatus(building);
-
-            setTimeout(function() {
-                    checkStatus();
-            }, localConfig.interval * 1000);
+        )
     }
+
+    setTimeout(function() {
+            checkStatus();
+    }, localConfig.interval * 1000);
+
 }
 
 
@@ -83,4 +94,3 @@ function updateStatus(status) {
         prevStatus = status;
     }
 }
-
