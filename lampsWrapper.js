@@ -4,6 +4,7 @@
 
     var hue = require('hue-module');
     var Concern = require('./Concern');
+    var Step = require('step');
 
     // stop all lamp at startup
 
@@ -18,7 +19,7 @@
     exports.type = function() {
         return "output";
     }   
-    
+
     exports.init = function(config) {
         console.log("lampsWrapper : Init [hueIp=%s, userName=%s]", config.url, config.username);
 
@@ -99,19 +100,81 @@
         }
     }
 
-    //function changeStatesAndRestore(newStates, duration) {
-    //    Step(
-    //        function lights() {
-    //            hue.lights(this);
-    //        },
-    //        function saveState(lights) {
-    //            for(i in lights)
-    //                if(lights.hasOwnProperty(i)) {
-    //
-    //                }
-    //        }
-    //    )
-    //}
+    exports.allOff = function() {
+        hue.lights(function(lights) {
+            for(i in lights) {
+                if(lights.hasOwnProperty(i)) {
+                    hue.change(lights[i].set({"on": false, "hue":0}));
+                }
+            }
+        });
+    }
 
+    exports.michaelKnight = function(duration) {
+        if (!duration) {
+            duration = 5000;
+        }
+        console.log("Michael Knight for "+duration);
+        var restore = [];
+        Step(
+            function() {
+                console.log("Get lights"); // XXX
+                hue.lights(this);
+            },
+            function(lights) {
+                console.log("Got lights", lights); // XXX
+                var group = this.group();
+                for (i in lights) {
+                    if (lights.hasOwnProperty(i)) {
+                        var light = lights[i];
+                        console.log("Count++",i);
+                        betterLight(light.id, group());
+                    }
+                }
+            },
+            function(err, lightsData) {
+                console.log("Got lightsData", lightsData.length); // XXX
+                for (i = 0; i < lightsData.length; i++) {
+                    console.log("Store light data ",lightsData[i]);
+                    restore.push(lightsData[i]);
+                }
+                hue.lights(this);
+            },
+            function(lights) {
+                console.log("Got lights", lights); // XXX
+                setTimeout(function() {
+                    for (i in lights) {
+                        if (lights.hasOwnProperty(i)) {
+                            var light = lights[i];
+                            hue.change(light.set({
+                                sat:255, bri :255, hue: 0 , on : true,
+                                alert : "lselect", transistiontime : 10
+                            }));
+                        }
+                    }
+                }, 1000);
+            }
+        );
+
+//        setTimeout(function() {
+//            console.log("Restore");
+//            for (i in restore) {
+//                var light = restore[i];
+//                console.log("To restore: ",light);
+//                hue.light(light.id, function(l) {
+//                    hue.change(l.set(light));
+//                });
+//            }
+//        }, duration);
+
+
+        function betterLight(id, callback) {
+            hue.light(id, function(l) {
+                callback(null, l);
+            });
+        }
+        
+
+    }
 
 })();
