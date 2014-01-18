@@ -68,8 +68,10 @@
 
             var todos = concern.todo.reverse();
             executeNextStep(service, todos);
+            return true;
         } else {
             console.log("Warn : Service "+service+" is not registered");
+            return false;
         }
 
     }
@@ -90,8 +92,10 @@
                 })
 
             });
+            return true;
         } else {
             console.log("Warn : Service "+service+" is not registered");
+            return false;
         }
     }
 

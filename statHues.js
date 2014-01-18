@@ -9,9 +9,9 @@ schedule = require('node-schedule'),
 evrythng 	= require('./evrythngServices.js'),
 lamps 		= require('./lampsWrapper.js'),
 jenkins 	= require('./jenkinsWrapper.js'),
+jenkinsBuilds   = require('./jenkinsBuildWrapper.js');
 git 		= require('./gitWrapper.js'),
 pingdom 	= require('./pingdomWrapper.js')
-
 
 // Initalize the config file
 nconf.argv()
@@ -31,7 +31,7 @@ console.log(green + "Welcome to " + red + "s" + green + "t" + blue + "a" + red +
 var app = express();
 app.use(express.bodyParser());
 //var inputsOutputs = [pingdom, lamps, git, jenkins];
-var inputsOutputs = [lamps, pingdom, jenkins, evrythng];
+var inputsOutputs = [lamps, pingdom, jenkins, evrythng, jenkinsBuilds];
 
 
 // Let's initialise our modules...
@@ -84,4 +84,3 @@ app.get('/api/git/:kpi', function(req, res) {
 var server = require('http').createServer(app);
 server.listen(1337);
 console.log(green + "StatHues is now listening on port 1337!" + reset);
-

@@ -45,7 +45,7 @@
         }
 
         Concern.prototype.yellow = function(duration) {
-            return this.rgb([255, 255, 0], duration);
+            return this.rgb([255, 170, 0], duration);
         }
 
         Concern.prototype.cyan = function(duration) {
