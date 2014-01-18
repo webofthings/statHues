@@ -17,6 +17,21 @@
             return this.red(duration);
         }
 
+        Concern.prototype.color = function(name, duration) {
+            if (name === 'red') {
+                return this.red(duration);
+            } else if (name === 'green') {
+                return this.green(duration);
+            } else if (name === 'blue') {
+                return this.blue(duration);
+            } else if (name === 'yellow') {
+                return this.yellow(duration);
+            } else {
+                console.log("Unknown color : ",name);
+                return this;
+            }
+        }
+
         Concern.prototype.red = function(duration) {
             return this.rgb([255, 0, 0], duration);
         }
