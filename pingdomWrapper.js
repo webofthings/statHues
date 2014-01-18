@@ -1,10 +1,10 @@
 /* PingdomWrapper */
 var pingdom = require('pingdom'), 
-hue = require('hue-module'),
 lamp = require('./lampsWrapper.js');
 
 var localConfig;
 var prevStatus;
+var isRunning;
 
 module.exports = {
 	name : function() {
@@ -12,6 +12,9 @@ module.exports = {
 	},
 	type : function() {
 		return "input";
+	},
+	running : function(running) {
+		isRunning = running;
 	},
 	init: function (config) {
 		localConfig = config;
@@ -23,25 +26,27 @@ module.exports = {
 }
 
 function checkStatus() {
-	console.log("Calling %s", module.exports.name());
-	pingdom.getChecks(localConfig.username, localConfig.password, localConfig.apiKey, function(data) {
-		var downDetected = false;
-		for (var i = 0; i<data.checks.length; i++) {
-			var currentCheck = data.checks[i];
-			console.log(currentCheck);
-			if(currentCheck.status !== 'up') {
-				serviceIsDown();
-				downDetected = true;
-				break;	
+	if(isRunning) {
+		console.log("Calling %s", module.exports.name());
+		pingdom.getChecks(localConfig.username, localConfig.password, localConfig.apiKey, function(data) {
+			var downDetected = false;
+			for (var i = 0; i<data.checks.length; i++) {
+				var currentCheck = data.checks[i];
+				console.log(currentCheck);
+				if(currentCheck.status !== 'up') {
+					serviceIsDown();
+					downDetected = true;
+					break;	
+				}
 			}
-		}
-		if(!downDetected) {
-			allServicesUp();
-		}
-	});
-	setTimeout(function() {
-		checkStatus();
-	}, localConfig.interval * 1000);
+			if(!downDetected) {
+				allServicesUp();
+			}
+		});
+		setTimeout(function() {
+			checkStatus();
+		}, localConfig.interval * 1000);
+	}
 }
 
 function hasStatusChanged(status) {

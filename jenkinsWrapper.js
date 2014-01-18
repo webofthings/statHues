@@ -6,6 +6,7 @@ lamp = require('./lampsWrapper.js');
 var localConfig;
 var prevStatus;
 var jenkins;
+var isRunning;
 
 module.exports = {
 	name : function() {
@@ -13,6 +14,9 @@ module.exports = {
 	},
 	type : function() {
 		return "input";
+	},
+	running : function(running) {
+		isRunning = running;
 	},
 	init: function (config) {
 		localConfig = config;
@@ -26,26 +30,26 @@ module.exports = {
 }
 
 function checkStatus() {
-	console.log("Calling %s", module.exports.name());
+	if(isRunning) {
+		console.log("Calling %s", module.exports.name());
+		//FAILURE UNSTABLE SUCCESS
+		jenkins.last_build_info('CI_GITWATCHER', function(err, data) {
+			if (err) { return console.log(err); }
 
-	//FAILURE UNSTABLE SUCCESS
+			var failureDetected = false;
+			var currentCheck = data.result;
+			console.log(currentCheck);
+			if(currentCheck.status !== 'SUCCESS') {
+				failure(currentCheck);
+			} else {
+				allServicesUp(currentCheck);
+			}
 
-	jenkins.last_build_info('CI_GITWATCHER', function(err, data) {
-		if (err) { return console.log(err); }
-
-		var failureDetected = false;
-		var currentCheck = data.result;
-		console.log(currentCheck);
-		if(currentCheck.status !== 'SUCCESS') {
-			failure(currentCheck);
-		} else {
-			allServicesUp(currentCheck);
-		}
-
-		setTimeout(function() {
-			checkStatus();
-		}, localConfig.interval * 1000);
-	});
+			setTimeout(function() {
+				checkStatus();
+			}, localConfig.interval * 1000);
+		});
+	}
 }
 
 

@@ -2,14 +2,16 @@
 
 
 // Imports
-var fs    		= require('fs'),
+var fs    	= require('fs'),
 nconf 		= require('nconf'),
 express 	= require('express'),
-evrythng 	= require('./evrythngServices.js');
-lamps 		= require('./lampsWrapper.js');
-jenkins 	= require('./jenkinsWrapper.js');
-git 		= require('./gitWrapper.js');
-pingdom 	= require('./pingdomWrapper.js');
+schedule = require('node-schedule'),
+evrythng 	= require('./evrythngServices.js'),
+lamps 		= require('./lampsWrapper.js'),
+jenkins 	= require('./jenkinsWrapper.js'),
+git 		= require('./gitWrapper.js'),
+pingdom 	= require('./pingdomWrapper.js')
+
 
 // Initalize the config file
 nconf.argv()
@@ -38,27 +40,36 @@ for(var i = 0; i < inputsOutputs.length; i++) {
 	currentService.init(nconf.get(currentService.name()));
 }
 
-/*// and call all the input services!
-setTimeout(function() {
-	loopInputs();
-}, 1000);
+// and schedule the on/off of the lamps
+var rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [0, new schedule.Range(0, 6)];
+rule.hour = 20;
+rule.minute = 34;
 
-function loopInputs() {
+var stop = schedule.scheduleJob(rule, function(){
+	// stop the services
 	for(var i = 0; i < inputsOutputs.length; i++) {
 		var currentService = inputsOutputs[i];
-		if(currentService.type() === 'input') {
-			currentService.checkStatus();
-		}
+		if(currentService.type === 'input') 
+			currentService.running(false);
 	}
-}*/
+	lamps.allOff();
+});
 
+// and on during the day
+var rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [0, new schedule.Range(0, 4)];
+rule.hour = 9;
+rule.minute = 00;
 
-function Service(thngId) {
-	return service = {
-		thngId : thngId,
-
+var start = schedule.scheduleJob(rule, function(){
+	// start the services
+	for(var i = 0; i < inputsOutputs.length; i++) {
+		var currentService = inputsOutputs[i];
+		currentService.running(true);
 	}
-}
+});
+
 
 // Add your routes here and send the data to your module
 
@@ -69,25 +80,8 @@ app.get('/api/git/:kpi', function(req, res) {
 });
 
 
-
-
-
-
 // Now let's set up the server itself!	
-
 var server = require('http').createServer(app);
 server.listen(1337);
 console.log(green + "StatHues is now listening on port 1337!" + reset);
-
-/*	// Example to setup the lamps
-	setTimeout(function() {
-		lamps.changeAndRestore("github", function(lamp) {
-
-			return lamp.ok(750).blue(1000).cyan(1000).error().warn();
-		});
-		lamps.change("jenkins", function(lamp) {
-
-			return lamp.red().magenta(1000).yellow(1000);
-		});
-}, 1000);*/
 
