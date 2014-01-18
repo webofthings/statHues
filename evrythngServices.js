@@ -38,31 +38,49 @@
 		
 		// in the mother code, load the service for each ;)			
 		
-		this.initService('github');
-		this.initService('jenkins');
-		this.initService('pingdom');
+		initService('github',function(thngId){
+			console.log("github shit is initialized");
+			updateServiceProperty('github','commitToday',7,null,function(thngId){
+				console.log("github's property is initialized")
+			});
+		});
+		
+		initService('jenkins',function(thngId){
+			console.log("jenkins shit is initialized")
+			//updateServiceProperty('github','commitToday',5,null,null)
+		});
+		
+		initService('pingdom',function(thngId){
+			console.log("pingdom shit is initialized")
+			//updateServiceProperty('github','commitToday',5,null,null)
+		});
 		
 			
 	}
 	
-	
-	exports.initService = function(serviceName,callback){
-		this.loadService(serviceName, function(thngId) {
-			console.log("EVT Object for " + serviceName + " initialized: " + thngId);
-			services.push({
-				name : serviceName,
-				thngId : thngId
-			});
-			
+	// This simply initiates the service - need to call it once per service
+	exports.initService = initService; 
+	function initService(serviceName, callback){
+				
+		loadService(serviceName, function(thngId) {
+			console.log("EVT Object for " + serviceName + " loaded: " + thngId);
+			services[serviceName]=thngId;
+			console.log("Current services: ", services);
+			callback(thngId);
 		});
-	}
+		
+	} 
+		
 	
 	// This is the main thing you guys need to use
-	exports.updateServiceProperty = function(serviceName,propId,val,timestamp,callback){
+	exports.updateServiceProperty = updateServiceProperty;	
+	function updateServiceProperty(serviceName,propId,val,timestamp,callback){
+		var property = [{value: val}]; 
+		
 		var options = {
-			url: server+'/thngs',
+			url: server+'/thngs/' + services[serviceName] + '/properties/' + propId,
 			method: "POST",
-			json: thng,
+			json: property,
 			headers: {
 				'User-Agent': 'request',
 				'Accept':'application/json',
@@ -70,43 +88,42 @@
 			}
 		};
 		
-		console.log("calling: " + options.url);
+		console.log("Updating property: " + options.url);
 			
 		request(options, function (error, response, body) {
-			if (!error && response.statusCode == 201) {
-				//result=body;
-				//console.log(body) // Print the google web page.
+			if (!error && response.statusCode == 200) {
 				callback(body)
 			} else {
-				console.log("CREATE THNG Problem " + response.statusCode)
+				console.log("Update Service Property Problem " + response.statusCode)
 			}
 		})
 		
 	}	
 		
-	exports.loadService = function(serviceName, callback){
-		this.searchThngs(serviceName, function(data){
+	//function loadService(serviceName, callback){
+	exports.loadService = loadService;
+	function loadService(serviceName, callback){
+		searchThngs(serviceName, function(data){
 			var thngId='';
 			
-			console.log("THNG Search - Results found: "+ data)
+			console.log("Searching for " + serviceName + " - Results found: "+ data)
 			
 			var body = JSON.parse(data);
 			
 			if (body.thngsResultCount>0){// if thing was found, use its ID
 				// We assume there's only 1...
 				thngId=body.thngs[0].id
-				callback(null, thngId);
+				callback(thngId);
 			} else { // otherwise create it on the fly
 				var thng = {
 		    	name: serviceName
 				};
 				
-				console.log("Then we create thng")
+				console.log("This service doesn't exist yet, we create it then!", thng)
 		
 				createThng(thng, function(data){
 					callback(body.id);
 				})
-				thng
 			}
 			
 		});
@@ -150,7 +167,8 @@
 		
 		
 	// Search for the thng by name
-	exports.searchThngs = function(name, callback){
+	exports.searchThngs = searchThngs;
+	function searchThngs(name, callback){
 		var options = {
 			url: server+'/search?types=thng&name='+name,
 			headers: {
@@ -160,12 +178,10 @@
 			}
 		};
 			
-		console.log("calling: " + options.url);
+		console.log("Searching: " + options.url);
 			
 		request(options, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
-				//result=body;
-				//console.log(body) // Print the google web page.
 				callback(body)
 			}
 		})
