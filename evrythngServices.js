@@ -31,21 +31,31 @@
 			break;
 		}
 			
+		console.log("evrythngServices : Init [environment=%s, apiKey=%s]", config.url, config.apiKey);
+			
 		// get all things to test if API connex works
 		
-			
-		this.loadService('GITHUB', function(thngId) {
-			services.push({
-				name : 'GITHUB',
-				thng : thngId
-			});
-		});
 		
+		// in the mother code, load the service for each ;)			
 		
-		console.log("evrythngServices : Init [environment=%s, apiKey=%s]", config.url, config.apiKey);
+		this.initService('github');
+		this.initService('jenkins');
+		this.initService('pingdom');
+		
 			
 	}
 	
+	
+	exports.initService = function(serviceName,callback){
+		this.loadService(serviceName, function(thngId) {
+			console.log("EVT Object for " + serviceName + " initialized: " + thngId);
+			services.push({
+				name : serviceName,
+				thngId : thngId
+			});
+			
+		});
+	}
 	
 	// This is the main thing you guys need to use
 	exports.updateServiceProperty = function(serviceName,propId,val,timestamp,callback){
