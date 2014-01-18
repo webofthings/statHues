@@ -64,7 +64,8 @@
         Concern.prototype.rgb = function(rgb, duration) {
             var next = {
                 "on" : true,
-                "rgb" : rgb
+                "rgb" : rgb,
+                "bri" : 255
             };
 
             return this.addState(next, duration);
@@ -82,6 +83,23 @@
             });
 
             return this;
+        }
+
+        Concern.prototype.blink = function() {
+            var last = this.todo[this.todo.length - 1];
+            var duration = false;
+            if (last && last.duration) {
+                duration = last.duration;
+                last.duration = 10;
+            }
+
+            this.todo.push({
+                state : { "alert" : "lselect"},
+                duration : duration
+            });
+
+            return this;
+        
         }
 
         return Concern;
