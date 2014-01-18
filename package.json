@@ -6,6 +6,7 @@
 		"pingdom" : "0.6.2",
 		"express": "3.4.8",
 		"nconf" : "0.6.9",
-		"request" : "2.33.0"
+		"request" : "2.33.0",
+		"jenkins-api" : "0.1.5"
     }
 }
