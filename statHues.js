@@ -65,5 +65,5 @@ var server = require('http').createServer(app);
 
 	lamps.change("test", function(lamp) {
 
-		return lamp.ok().error().warn();
+		return lamp.ok().blue(1000).cyan(1000).error().warn();
 	});
