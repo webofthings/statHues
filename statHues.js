@@ -8,6 +8,9 @@ var blue  = '\033[34m';
 var green = '\033[32m';
 var reset = '\033[0m'; // Set back to white
 
+
+	var evrythngApiKey = "vi24xhAWxrX2SPJTkfTipk3iwVEUBJEoxKQwhK4Dnwv038VooURWAAYr8keJvhH7nEmSRwA3jDxv7jsx";
+
 	console.log(green + "Welcome to " + red + "s" + green + "t" + blue + "a" + red + "t" + green + "H" + blue + "u" + red + "e" + green + "s" + blue + "!" + reset);
 
 	// Use express http framework, as it comes bundled with
@@ -27,9 +30,14 @@ var app = express();
 	// Let's load our modules that we will want to call within
 	// this node app
 	
-var lamps 	= require('./lampsWrapper.js');
-var jenkins = require('./jenkinsWrapper.js');
-var git 	= require('./gitWrapper.js');
+	var lamps 	= require('./lampsWrapper.js');
+	var jenkins = require('./jenkinsWrapper.js');
+	var git 	= require('./gitWrapper.js');
+
+	// integrates engine wrapper
+	var evrythng 	= require('./evrythngServices.js');
+
+	evrythng.init('production',evrythngApiKey);
 
 	// Let's initialise our modules...
 	
@@ -57,5 +65,5 @@ var server = require('http').createServer(app);
 
 	lamps.change("test", function(lamp) {
 
-		return lamp.ok().error().warning();
+		return lamp.ok().error().warn();
 	});
