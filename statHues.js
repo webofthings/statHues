@@ -40,8 +40,8 @@ var app = express();
 	evrythng.init('production',evrythngApiKey);
 
 	// Let's initialise our modules...
-	
-	lamps.init('192.168.11.131', 'newdeveloper');
+	var services = ['test', 'jenkins', 'github']
+	lamps.init('192.168.11.131', 'newdeveloper', services);
 	jenkins.init();
 	git.init();
 	
@@ -62,8 +62,13 @@ var server = require('http').createServer(app);
 	console.log(green + "StatHues is now listening on port 1337!" + reset);
 
 	// Example to setup the lamps
+	setTimeout(function() {
+		lamps.change("test", function(lamp) {
 
-	lamps.change("test", function(lamp) {
+			return lamp.ok(750).blue(1000).cyan(1000).error().warn();
+		});
+		lamps.change("jenkins", function(lamp) {
 
-		return lamp.ok().blue(1000).cyan(1000).error().warn();
-	});
+			return lamp.red().magenta(1000).yellow(1000);
+		});
+	}, 1000);
