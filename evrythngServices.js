@@ -27,13 +27,13 @@ exports.init = function(config) {
 			
 			this.loadService('GITHUB');
 			console.log("evrythngServices : Init [environment=%s, apiKey=%s]", config.url, config.apiKey);
-			
+
 		}
 		
 		
 		exports.loadService = function(serviceName){
 			
-			this.searchThngs(serviceName, function(data){console.log(data)}; );
+			this.searchThngs(serviceName, function(data){console.log(data)} );
 			
 		}
 		

@@ -5,6 +5,7 @@
 		"hue-module": "0.0.9",
 		"pingdom" : "0.6.2",
 		"express": "3.4.8",
-		"nconf" : "0.6.9"
+		"nconf" : "0.6.9",
+		"request" : "2.33.0"
     }
 }
