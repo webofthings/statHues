@@ -96,6 +96,16 @@
         }
     }
 
+    exports.allOff = function() {
+        hue.lights(function(lights) {
+            for(i in lights) {
+                if(lights.hasOwnProperty(i)) {
+                    hue.change(lights[i].set({"on": false, "hue":0}));
+                }
+            }
+        });
+    }
+
     exports.michaelKnight = function(duration) {
         if (!duration) {
             duration = 5000;
