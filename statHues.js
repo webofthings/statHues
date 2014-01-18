@@ -34,7 +34,7 @@ app.use(express.bodyParser());
 
 
 //var inputsOutputs = [lamps, git, jenkins];
-var inputsOutputs = [pingdom, lamps, git, jenkins];
+var inputsOutputs = [pingdom, lamps, git, jenkins, evrythng];
 
 
 // Let's initialise our modules...
@@ -64,11 +64,15 @@ app.get('/api/git/:kpi', function(req, res) {
 
 });
 
+
+
+
+
+
 // Now let's set up the server itself!	
 
 var server = require('http').createServer(app);
 server.listen(1337);
-
 
 console.log(green + "StatHues is now listening on port 1337!" + reset);
 
