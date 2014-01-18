@@ -44,7 +44,7 @@ for(var i = 0; i < inputsOutputs.length; i++) {
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0, 6)];
 rule.hour = 20;
-rule.minute = 34;
+rule.minute = 37;
 
 var stop = schedule.scheduleJob(rule, function(){
 	// stop the services
@@ -54,6 +54,7 @@ var stop = schedule.scheduleJob(rule, function(){
 			currentService.running(false);
 	}
 	lamps.allOff();
+	console.log("All lamps off!");
 });
 
 // and on during the day
