@@ -2,6 +2,7 @@
 	"name": "buildLamps",
 	"version": "0.0.1",
 	"dependencies": {
-		"hue-module": "0.0.9"
+		"hue-module": "0.0.9",
+		"express": "3.4.8"
     }
 }
