@@ -40,10 +40,11 @@ for(var i = 0; i < inputsOutputs.length; i++) {
 }
 
 // and schedule the on/off of the lamps
+// off during the night...
 var rule = new schedule.RecurrenceRule();
-rule.dayOfWeek = [0, new schedule.Range(0, 6)];
-rule.hour = 21;
-rule.minute = 30;
+rule.dayOfWeek = [0, new schedule.Range(0, 4)];
+rule.hour = 20;
+rule.minute = 00;
 
 var stop = schedule.scheduleJob(rule, function(){
 	// stop the services
@@ -56,9 +57,9 @@ var stop = schedule.scheduleJob(rule, function(){
 	console.log("All lamps off!");
 });
 
-// and on during the day
+// and on during the day...
 var rule = new schedule.RecurrenceRule();
-rule.dayOfWeek = [0, new schedule.Range(0, 6)];
+rule.dayOfWeek = [0, new schedule.Range(0, 4)];
 rule.hour = 9;
 rule.minute = 00;
 
