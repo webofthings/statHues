@@ -38,7 +38,7 @@
 		
 		// in the mother code, load the service for each ;)			
 		initService('github',function(thngId){
-			console.log("github shit is initialized");
+			console.log("github is initialized");
 			//serviceId,propertyName,value,timestamp,callback
 			updateServiceProperty('github','commitToday',7,null,function(thngId){
 				console.log("github's property is initialized")
@@ -46,12 +46,12 @@
 		});
 		
 		initService('jenkins',function(thngId){
-			console.log("jenkins shit is initialized")
+			console.log("jenkins is initialized")
 			//updateServiceProperty('github','commitToday',5,null,null)
 		});
 		
 		initService('pingdom',function(thngId){
-			console.log("pingdom shit is initialized")
+			console.log("pingdom is initialized")
 			//updateServiceProperty('github','commitToday',5,null,null)
 		});
 		

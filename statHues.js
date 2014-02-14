@@ -5,7 +5,10 @@
 var fs    	= require('fs'),
 nconf 		= require('nconf'),
 express 	= require('express'),
-schedule = require('node-schedule'),
+cluster 	= require('cluster'),
+fs 			= require('fs'),
+numCPUs 	= require('os').cpus().length,
+schedule 	= require('node-schedule'),
 evrythng 	= require('./evrythngServices.js'),
 lamps 		= require('./lampsWrapper.js'),
 jenkins 	= require('./jenkinsWrapper.js'),
@@ -31,6 +34,20 @@ console.log(green + "Welcome to " + red + "s" + green + "t" + blue + "a" + red +
 var app = express();
 app.use(express.bodyParser());
 var inputsOutputs = [lamps, pingdom, jenkins, evrythng, jenkinsBuilds];
+
+if (cluster.isMaster) {
+	console.log('Starting process...');
+	
+	var worker = cluster.fork().process;
+	console.log('Worker PID %s started.', worker.pid);
+
+	// on uncaught exceptions we restart the worker (child)
+	cluster.on('exit', function(worker) {
+		console.log('Worker %s died! Restarting...', worker.process.pid);
+		cluster.fork();
+	});
+} 
+else {
 
 
 // Let's initialise our modules...
@@ -85,3 +102,5 @@ app.get('/api/git/:kpi', function(req, res) {
 var server = require('http').createServer(app);
 server.listen(1337);
 console.log(green + "StatHues is now listening on port 1337!" + reset);
+
+}
