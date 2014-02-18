@@ -40,8 +40,8 @@
     }
 
     function executeNextStep(service, todos) {
-       var next = todos.pop();
-       if (next) {
+     var next = todos.pop();
+     if (next) {
         console.log("Execute next step ", next);
         var state = next.state;
         console.log("-> state ", state);
@@ -55,25 +55,20 @@
         });
 
            if (duration) {
-             setTimeout(function() {
+               setTimeout(function() {
                 executeNextStep(service, todos)
             }, duration);
-         }
-     }
- }
- exports.change = function(service, fn) {
+           }
+       }
+   }
+   exports.change = function(service, fn) {
     if (_lampMapping[service]) {
         console.log("Change lamp state for service "+service+" (lamp "+_lampMapping[service]+")");
         var concern = Concern.Empty(service);
         concern = fn(concern);
-
-        if(concern.todo) {
-            var todos = concern.todo.reverse();
-            executeNextStep(service, todos);
-            return true;
-        } else {
-            return false;
-        }
+        var todos = concern.todo.reverse();
+        executeNextStep(service, todos);
+        return true;
     } else {
         console.log("Warn : Service "+service+" is not registered");
         return false;

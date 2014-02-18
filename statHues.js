@@ -35,6 +35,7 @@ var app = express();
 app.use(express.bodyParser());
 var inputsOutputs = [lamps, pingdom, jenkins, evrythng, jenkinsBuilds];
 
+
 if (cluster.isMaster) {
 	console.log('Starting process...');
 	
