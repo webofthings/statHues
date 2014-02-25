@@ -1,6 +1,6 @@
 /* PingdomWrapper */
 var pingdom = require('pingdom'), 
-lamps = require('./lampsWrapper.js');
+	lamps = require('../outputs/lampsWrapper.js');
 
 var localConfig;
 var prevStatus;

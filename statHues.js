@@ -1,5 +1,4 @@
-	/* EVRYTHNG Hackathon - 18/01/2014 */
-
+/* EVRYTHNG Hackathon - 18/01/2014 */
 
 // Imports
 var fs    	= require('fs'),
@@ -7,14 +6,15 @@ nconf 		= require('nconf'),
 express 	= require('express'),
 cluster 	= require('cluster'),
 fs 			= require('fs'),
-numCPUs 	= require('os').cpus().length,
 schedule 	= require('node-schedule'),
-evrythng 	= require('./evrythngServices.js'),
-lamps 		= require('./lampsWrapper.js'),
-jenkins 	= require('./jenkinsWrapper.js'),
-jenkinsBuilds   = require('./jenkinsBuildWrapper.js');
-git 		= require('./gitWrapper.js'),
-pingdom 	= require('./pingdomWrapper.js')
+evrythng 	= require('./libs/outputs/evrythngServices.js'),
+lamps 		= require('./libs/outputs/lampsWrapper.js'),
+jenkins 	= require('./libs/inputs/jenkinsWrapper.js'),
+jenkinsBuilds   = require('./libs/inputs/jenkinsBuildWrapper.js'),
+pingdom 	= require('./libs/inputs/pingdomWrapper.js');
+
+// What are the inputs/outputs we want to use?
+var inputsOutputs = [lamps, pingdom, jenkins, evrythng, jenkinsBuilds];
 
 // Initalize the config file
 nconf.argv()
@@ -23,7 +23,6 @@ nconf.argv()
 
 // Let's set up some terminal colours :)
 // No-one likes a black and white terminal...
-
 var red   = '\033[31m';
 var blue  = '\033[34m';
 var green = '\033[32m';
@@ -33,8 +32,6 @@ console.log(green + "Welcome to " + red + "s" + green + "t" + blue + "a" + red +
 
 var app = express();
 app.use(express.bodyParser());
-var inputsOutputs = [lamps, pingdom, jenkins, evrythng, jenkinsBuilds];
-
 
 if (cluster.isMaster) {
 	console.log('Starting process...');
@@ -49,8 +46,7 @@ if (cluster.isMaster) {
 	});
 } 
 else {
-
-
+	
 // Let's initialise our modules...
 for(var i = 0; i < inputsOutputs.length; i++) {
 	var currentService = inputsOutputs[i];

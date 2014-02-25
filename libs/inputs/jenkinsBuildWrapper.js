@@ -1,8 +1,8 @@
 /* JenkinsWrapper */
 
 var jenkinsapi = require('jenkins-api'),
-lamps = require('./lampsWrapper.js');
-var Step = require('step');
+    Step = require('step'),
+    lamps = require('../outputs/lampsWrapper.js');
 
 var localConfig;
 var prevStatus;
