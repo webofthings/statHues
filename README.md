@@ -12,6 +12,7 @@ The code is organized alongside two types of services in their respective folder
 # Installation & Configuration
 
 * Clone the repository. 
+* `npm install`
 * Add a `config.json` file to the root directory containing the credentials to access the inputs and outputs
 
 ```json
