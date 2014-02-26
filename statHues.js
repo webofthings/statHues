@@ -1,4 +1,4 @@
-/* EVRYTHNG Hackathon - 18/01/2014 */
+/* EVRYTHNG "Pimp Your Office" Hackathon - 18/01/2014 */
 
 // Imports
 var fs    	= require('fs'),
@@ -46,7 +46,7 @@ if (cluster.isMaster) {
 	});
 } 
 else {
-	
+
 // Let's initialise our modules...
 for(var i = 0; i < inputsOutputs.length; i++) {
 	var currentService = inputsOutputs[i];
