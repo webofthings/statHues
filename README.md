@@ -1,11 +1,11 @@
-StatHues
+statHues
 =======
 
 A set of tools (hacked in a day!!) to have [Hue Lamps](http://www.meethue.com/) and a [Raspberry PI](http://www.raspberrypi.org) monitoring your software and infrastructure and KPIs, the Web of Things way!
 
 It currently support Jenkins, Pingdom and Hue out of the box.
 
-# Key concepts
+# Key Concepts
 
 The code is organized alongside two types of services in their respective folders: outputs and inputs. Inputs are the services you get your data from (e.g., Pingdom), Outputs the real-world services you use to display the status of your system (e.g., Hue lamps).
 
